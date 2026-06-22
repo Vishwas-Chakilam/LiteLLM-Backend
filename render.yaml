@@ -54,3 +54,5 @@ services:
         value: "30"
       - key: DATA_DIR
         value: data/conversations
+      - key: SYSTEM_PROMPT_ENABLED
+        value: "true"

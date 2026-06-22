@@ -29,6 +29,7 @@ from app.services.classifier import pick_tier
 from app.services.cost_tracker import get_cost_tracker
 from app.services.history_store import HistoryStore
 from app.services.router_service import get_router_service
+from app.services.system_prompt import prepare_messages_for_llm, resolve_system_prompt
 
 limiter = Limiter(key_func=get_remote_address)
 logger = logging.getLogger(__name__)
@@ -176,8 +177,17 @@ async def chat_completions(
     tier = pick_tier(body.messages, meta, override=body.model)
     user_content = _latest_user_message(body.messages)
 
+    settings = get_settings()
+    system_prompt = resolve_system_prompt(
+        settings.system_prompt,
+        settings.system_prompt_enabled,
+    )
     history_messages = store.parse_messages(store.read_transcript(conversation_id))
-    llm_messages = history_messages + [{"role": m.role, "content": m.content} for m in body.messages]
+    llm_messages = prepare_messages_for_llm(
+        history_messages,
+        body.messages,
+        system_prompt,
+    )
 
     try:
         response = router.completion(

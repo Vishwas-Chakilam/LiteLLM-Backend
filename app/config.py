@@ -40,6 +40,8 @@ class Settings(BaseSettings):
     max_output_tokens: int = 2000
     rate_limit_per_minute: int = 30
     data_dir: str = "data/conversations"
+    system_prompt_enabled: bool = True
+    system_prompt: str | None = None
 
     def fast_deployments(self) -> list[dict[str, str]]:
         return _scan_model_keys("FAST")
