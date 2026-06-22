@@ -7,17 +7,50 @@ services:
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
+      # Fast tier — add more with FAST_MODEL_5 / FAST_API_KEY_5, etc.
       - key: FAST_MODEL_1
         sync: false
       - key: FAST_API_KEY_1
         sync: false
+      - key: FAST_MODEL_2
+        sync: false
+      - key: FAST_API_KEY_2
+        sync: false
+      - key: FAST_MODEL_3
+        sync: false
+      - key: FAST_API_KEY_3
+        sync: false
+      - key: FAST_MODEL_4
+        sync: false
+      - key: FAST_API_KEY_4
+        sync: false
+      # Capable tier — add more with CAPABLE_MODEL_3 / CAPABLE_API_KEY_3, etc.
       - key: CAPABLE_MODEL_1
         sync: false
       - key: CAPABLE_API_KEY_1
         sync: false
+      - key: CAPABLE_MODEL_2
+        sync: false
+      - key: CAPABLE_API_KEY_2
+        sync: false
+      # Router + limits
+      - key: ROUTING_STRATEGY
+        value: simple-shuffle
+      - key: NUM_RETRIES
+        value: "2"
+      - key: ALLOWED_FAILS
+        value: "3"
+      - key: COOLDOWN_TIME
+        value: "60"
       - key: DAILY_BUDGET_USD
         value: "10.00"
       - key: PER_CONVERSATION_BUDGET_USD
         value: "0.50"
+      - key: MAX_INPUT_TOKENS
+        value: "8000"
+      - key: MAX_OUTPUT_TOKENS
+        value: "2000"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "30"
       - key: DATA_DIR
         value: data/conversations
