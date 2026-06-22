@@ -70,7 +70,12 @@ def _latest_user_message(messages: list[ChatMessage]) -> str:
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"LiteLLM Chat API": "Ready! Visit /docs for interactive API documentation."}
+
+@app.get("/getprompt")
+async def get_prompt():
+    return {"prompt": resolve_system_prompt(get_settings().system_prompt, get_settings().system_prompt_enabled)}
+
 
 @app.get("/health", response_model=HealthResponse)
 async def health() -> HealthResponse:
