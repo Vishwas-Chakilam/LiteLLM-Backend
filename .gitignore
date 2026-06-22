@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+data/conversations/*
+!data/conversations/.gitkeep
+data/cost_log.jsonl
+*.lock

@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: litellm-chat-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: FAST_MODEL_1
+        sync: false
+      - key: FAST_API_KEY_1
+        sync: false
+      - key: CAPABLE_MODEL_1
+        sync: false
+      - key: CAPABLE_API_KEY_1
+        sync: false
+      - key: DAILY_BUDGET_USD
+        value: "10.00"
+      - key: PER_CONVERSATION_BUDGET_USD
+        value: "0.50"
+      - key: DATA_DIR
+        value: /opt/render/project/src/data/conversations
+    disk:
+      name: conversation-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
