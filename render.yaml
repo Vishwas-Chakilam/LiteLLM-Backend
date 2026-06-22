@@ -20,8 +20,4 @@ services:
       - key: PER_CONVERSATION_BUDGET_USD
         value: "0.50"
       - key: DATA_DIR
-        value: /opt/render/project/src/data/conversations
-    disk:
-      name: conversation-data
-      mountPath: /opt/render/project/src/data
-      sizeGB: 1
+        value: data/conversations
