@@ -13,6 +13,11 @@ os.environ.setdefault("CAPABLE_API_KEY_1", "sk-test-capable")
 os.environ.setdefault("DAILY_BUDGET_USD", "100")
 os.environ.setdefault("PER_CONVERSATION_BUDGET_USD", "10")
 os.environ.setdefault("RATE_LIMIT_PER_MINUTE", "1000")
+os.environ.setdefault("AUTH_REQUIRED", "false")
+# Force offline Supabase for unit tests (override .env)
+os.environ["SUPABASE_URL"] = ""
+os.environ["SUPABASE_SERVICE_ROLE_KEY"] = ""
+os.environ["SUPABASE_ANON_KEY"] = ""
 
 
 @pytest.fixture
@@ -34,6 +39,9 @@ def client(tmp_data_dir: Path, monkeypatch: pytest.MonkeyPatch):
 
     get_settings.cache_clear()
     reset_router_service()
+    import app.registry.registry as reg_mod
+
+    reg_mod._registry = None
     import app.services.cost_tracker as ct
 
     ct._cost_tracker = None
@@ -46,4 +54,5 @@ def client(tmp_data_dir: Path, monkeypatch: pytest.MonkeyPatch):
 
     get_settings.cache_clear()
     reset_router_service()
+    reg_mod._registry = None
     ct._cost_tracker = None

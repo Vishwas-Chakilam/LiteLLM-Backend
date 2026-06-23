@@ -1,0 +1,39 @@
+{
+  "hospital_mcp": {
+    "internal": true,
+    "tools": [
+      "get_hospital_info",
+      "get_accepted_insurers",
+      "check_insurance_accepted",
+      "list_departments",
+      "list_providers",
+      "list_services",
+      "get_hospital_payer_rules",
+      "get_lab_reference_range"
+    ]
+  },
+  "icd_lookup_mcp": {
+    "url": "http://localhost:8101",
+    "tools": ["lookup_icd"]
+  },
+  "cpt_lookup_mcp": {
+    "url": "http://localhost:8102",
+    "tools": ["lookup_cpt"]
+  },
+  "payer_rules_mcp": {
+    "url": "http://localhost:8103",
+    "tools": ["get_payer_rules"]
+  },
+  "drug_database_mcp": {
+    "url": "http://localhost:8104",
+    "tools": ["drug_info", "interactions"]
+  },
+  "lab_reference_mcp": {
+    "url": "http://localhost:8105",
+    "tools": ["reference_range"]
+  },
+  "pubmed_mcp": {
+    "url": "http://localhost:8106",
+    "tools": ["search"]
+  }
+}

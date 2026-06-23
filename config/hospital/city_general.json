@@ -1,0 +1,61 @@
+{
+  "hospital": {
+    "id": "a0000000-0000-4000-8000-000000000001",
+    "slug": "city_general",
+    "name": "City General Hospital",
+    "address": "1200 Medical Center Drive",
+    "city": "Springfield",
+    "state": "IL",
+    "zip": "62701",
+    "phone": "(555) 100-2000",
+    "npi": "1234567890",
+    "website": "https://citygeneral.example.org",
+    "er_wait_minutes": 35,
+    "visiting_hours": {"general": "8am-8pm", "icu": "visiting by appointment", "er": "24/7"},
+    "metadata": {"beds": 420, "trauma_level": 2, "teaching_hospital": true}
+  },
+  "insurance_plans": [
+    {"insurer_id": "aetna", "insurer_name": "Aetna", "plan_types": ["PPO", "HMO", "EPO"], "in_network": true, "notes": "Full in-network coverage for most services"},
+    {"insurer_id": "united", "insurer_name": "UnitedHealthcare", "plan_types": ["Choice Plus", "HMO", "Medicare Advantage"], "in_network": true, "notes": "Prior auth required for MRI and specialty drugs"},
+    {"insurer_id": "cigna", "insurer_name": "Cigna", "plan_types": ["Open Access Plus", "LocalPlus"], "in_network": true, "notes": "In-network for hospital and affiliated clinics"},
+    {"insurer_id": "bcbs", "insurer_name": "Blue Cross Blue Shield", "plan_types": ["PPO", "Blue Choice"], "in_network": true, "notes": "State BCBS plans accepted"},
+    {"insurer_id": "medicare", "insurer_name": "Medicare", "plan_types": ["Part A", "Part B"], "in_network": true, "notes": "Medicare assignment accepted"},
+    {"insurer_id": "medicaid", "insurer_name": "Medicaid", "plan_types": ["State Medicaid"], "in_network": true, "notes": "Illinois Medicaid accepted"},
+    {"insurer_id": "humana", "insurer_name": "Humana", "plan_types": ["HMO", "PPO"], "in_network": false, "notes": "Out of network — emergency stabilization only"}
+  ],
+  "departments": [
+    {"name": "Emergency Department", "floor": "1", "phone": "(555) 100-2100", "hours": "24/7", "services": ["trauma", "acute care", "stabilization"]},
+    {"name": "Cardiology", "floor": "3", "phone": "(555) 100-2200", "hours": "Mon-Fri 8am-5pm", "services": ["echo", "stress test", "cardiac cath"]},
+    {"name": "Radiology & Imaging", "floor": "2", "phone": "(555) 100-2300", "hours": "Mon-Sat 7am-7pm", "services": ["xray", "mri", "ct", "ultrasound"]},
+    {"name": "Laboratory", "floor": "1", "phone": "(555) 100-2400", "hours": "24/7", "services": ["cbc", "chemistry", "pathology"]},
+    {"name": "Orthopedics", "floor": "4", "phone": "(555) 100-2500", "hours": "Mon-Fri 8am-6pm", "services": ["joint replacement", "sports medicine"]},
+    {"name": "Primary Care", "floor": "5", "phone": "(555) 100-2600", "hours": "Mon-Fri 8am-8pm", "services": ["wellness", "chronic care", "referrals"]}
+  ],
+  "providers": [
+    {"name": "Dr. Sarah Chen", "specialty": "Cardiology", "department": "Cardiology", "npi": "1111111111", "accepting_patients": true},
+    {"name": "Dr. James Wilson", "specialty": "Orthopedic Surgery", "department": "Orthopedics", "npi": "2222222222", "accepting_patients": true},
+    {"name": "Dr. Maria Lopez", "specialty": "Internal Medicine", "department": "Primary Care", "npi": "3333333333", "accepting_patients": true},
+    {"name": "Dr. Robert Kim", "specialty": "Radiology", "department": "Radiology & Imaging", "npi": "4444444444", "accepting_patients": true},
+    {"name": "Dr. Emily Patel", "specialty": "Emergency Medicine", "department": "Emergency Department", "npi": "5555555555", "accepting_patients": true}
+  ],
+  "services": [
+    {"service_code": "70553", "name": "MRI Brain with contrast", "department": "Radiology & Imaging", "requires_prior_auth": true, "typical_cost_usd": 2800},
+    {"service_code": "72148", "name": "MRI Lumbar Spine", "department": "Radiology & Imaging", "requires_prior_auth": true, "typical_cost_usd": 2400},
+    {"service_code": "85025", "name": "Complete Blood Count", "department": "Laboratory", "requires_prior_auth": false, "typical_cost_usd": 45}
+  ],
+  "payer_rules": [
+    {"insurer_id": "aetna", "procedure_type": "mri", "rules": {"requires_clinical_notes": true, "requires_prior_treatment": true, "min_weeks_conservative": 6}},
+    {"insurer_id": "aetna", "procedure_type": "general", "rules": {"requires_referral": false, "er_copay_applies": true}},
+    {"insurer_id": "united", "procedure_type": "mri", "rules": {"requires_clinical_notes": true, "requires_imaging_history": true}},
+    {"insurer_id": "united", "procedure_type": "general", "rules": {"requires_referral": true}}
+  ],
+  "lab_ranges": [
+    {"marker": "hemoglobin", "unit": "g/dL", "low": 12.0, "high": 17.5, "critical_low": 7.0, "critical_high": 20.0},
+    {"marker": "wbc", "unit": "cells/uL", "low": 4500, "high": 11000, "critical_low": 2000, "critical_high": 30000},
+    {"marker": "glucose", "unit": "mg/dL", "low": 70, "high": 99, "critical_low": 50, "critical_high": 400}
+  ],
+  "demo_patients": [
+    {"name": "Jane Demo", "insurance_provider": "aetna", "age": 45, "allergies": ["penicillin"]},
+    {"name": "John Demo", "insurance_provider": "united", "age": 62, "allergies": []}
+  ]
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Healthcare AI Platform</title>
+  <link rel="stylesheet" href="/admin/static/admin.css" />
+</head>
+<body>
+
+  <!-- Login -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <h1>Admin Console</h1>
+      <p>Healthcare Multi-Agent AI Platform</p>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" required placeholder="admin@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" required placeholder="••••••••" />
+        </div>
+        <div id="login-error" class="alert alert-error" style="display:none;margin-bottom:1rem"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Sign in</button>
+      </form>
+      <p style="margin-top:1rem;font-size:0.75rem;color:var(--muted)">
+        Requires an account with the <strong>admin</strong> role.
+        When <code>AUTH_REQUIRED=false</code>, the dashboard opens without login.
+      </p>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="app" class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h2>Healthcare AI</h2>
+        <span>Admin Console</span>
+      </div>
+      <button class="nav-item active" data-section="dashboard">Dashboard</button>
+      <button class="nav-item" data-section="users">Users</button>
+      <button class="nav-item" data-section="patients">Patients</button>
+      <button class="nav-item" data-section="conversations">Conversations</button>
+      <button class="nav-item" data-section="playground">Agent Playground</button>
+      <button class="nav-item" data-section="agents">Agents</button>
+      <button class="nav-item" data-section="prior_auth">Prior Auth</button>
+      <button class="nav-item" data-section="workflows">Workflows</button>
+      <button class="nav-item" data-section="audit">Audit Logs</button>
+      <button class="nav-item" data-section="agent_logs">Agent Logs</button>
+      <button class="nav-item" data-section="tool_logs">Tool Logs</button>
+      <button class="nav-item" data-section="assignments">Assignments</button>
+      <button class="nav-item" data-section="cost">LLM Costs</button>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <h1 id="page-title">Dashboard</h1>
+        <div class="user-badge">
+          <span id="user-email">—</span>
+          <span id="user-role" class="badge badge-admin">admin</span>
+          <button id="logout-btn" class="btn btn-ghost btn-sm">Logout</button>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <section id="section-dashboard" class="section active">
+          <div id="supabase-warn" class="alert alert-warn" style="display:none"></div>
+          <div id="stats-grid" class="stats-grid"></div>
+        </section>
+
+        <section id="section-users" class="section">
+          <div class="panel"><div id="users-table"></div></div>
+        </section>
+
+        <section id="section-patients" class="section">
+          <div class="panel"><div id="patients-table"></div></div>
+        </section>
+
+        <section id="section-conversations" class="section">
+          <div class="panel"><div id="conversations-table"></div></div>
+        </section>
+
+        <section id="section-playground" class="section">
+          <div class="playground-layout">
+            <div class="panel playground-form-panel">
+              <div class="panel-header"><h3>Run test</h3></div>
+              <div class="playground-form">
+                <div class="form-group">
+                  <label>Mode</label>
+                  <div class="mode-tabs">
+                    <button type="button" class="mode-tab active" data-mode="workflow">Full workflow</button>
+                    <button type="button" class="mode-tab" data-mode="agent">Single agent</button>
+                    <button type="button" class="mode-tab" data-mode="health">Health check</button>
+                  </div>
+                </div>
+                <div class="form-group" id="demo-patient-group">
+                  <label for="playground-demo-patient">Test patient (demo data)</label>
+                  <select id="playground-demo-patient"></select>
+                </div>
+                <div class="form-group" id="agent-select-group" style="display:none">
+                  <label for="playground-agent">Agent</label>
+                  <select id="playground-agent"></select>
+                </div>
+                <div class="form-group">
+                  <label for="playground-query">Query / scenario</label>
+                  <textarea id="playground-query" rows="4" placeholder="Enter a patient query or clinical scenario…"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Sample prompts</label>
+                  <div id="sample-prompts" class="sample-chips"></div>
+                </div>
+                <div class="playground-actions">
+                  <button type="button" id="playground-run" class="btn btn-primary">Run test</button>
+                  <button type="button" id="playground-health" class="btn btn-ghost">Quick health check</button>
+                </div>
+              </div>
+            </div>
+            <div class="panel playground-result-panel">
+              <div class="panel-header">
+                <h3>Results</h3>
+                <span id="playground-status" class="badge badge-pending">idle</span>
+              </div>
+              <div id="playground-result" class="playground-result">
+                <div class="empty">Run a test to see agent outputs and workflow trace.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="section-agents" class="section">
+          <div class="panel"><div id="agents-table"></div></div>
+        </section>
+
+        <section id="section-prior_auth" class="section">
+          <div class="panel"><div id="prior_auth-table"></div></div>
+        </section>
+
+        <section id="section-workflows" class="section">
+          <div class="panel"><div id="workflows-table"></div></div>
+        </section>
+
+        <section id="section-audit" class="section">
+          <div class="panel"><div id="audit-table"></div></div>
+        </section>
+
+        <section id="section-agent_logs" class="section">
+          <div class="panel"><div id="agent_logs-table"></div></div>
+        </section>
+
+        <section id="section-tool_logs" class="section">
+          <div class="panel"><div id="tool_logs-table"></div></div>
+        </section>
+
+        <section id="section-assignments" class="section">
+          <div class="panel">
+            <form id="assignment-form" class="inline-form">
+              <input id="assign-doctor" placeholder="Doctor user UUID" required />
+              <input id="assign-patient" placeholder="Patient profile UUID" required />
+              <button type="submit" class="btn btn-primary">Assign</button>
+            </form>
+            <div id="assignments-table"></div>
+          </div>
+        </section>
+
+        <section id="section-cost" class="section">
+          <div id="cost-summary" class="stats-grid" style="margin-bottom:1rem"></div>
+          <div class="panel"><div id="cost-table"></div></div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="/admin/static/admin.js"></script>
+</body>
+</html>

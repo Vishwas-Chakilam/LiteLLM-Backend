@@ -30,6 +30,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    # LiteLLM router
     routing_strategy: str = "simple-shuffle"
     num_retries: int = 2
     allowed_fails: int = 3
@@ -43,6 +44,36 @@ class Settings(BaseSettings):
     system_prompt_enabled: bool = True
     system_prompt: str | None = None
 
+    # Healthcare platform models
+    cheap_model: str = "fast"
+    reasoning_model: str = "capable"
+    premium_model: str = "capable"
+
+    # Supabase
+    supabase_url: str = ""
+    supabase_anon_key: str = ""
+    supabase_service_role_key: str = ""
+    supabase_jwt_secret: str = ""
+
+    # Redis
+    redis_url: str = "redis://localhost:6379/0"
+    redis_session_ttl_seconds: int = 86400
+
+    # Vector DB (Chroma)
+    chroma_persist_dir: str = "data/chroma"
+    medical_rag_enabled: bool = True
+
+    # Auth
+    auth_required: bool = True
+    jwt_algorithm: str = "HS256"
+
+    # MCP
+    mcp_servers_config: str = "config/mcp_servers.json"
+
+    # Single-hospital deployment
+    hospital_slug: str = "city_general"
+    hospital_data_file: str = "config/hospital/city_general.json"
+
     def fast_deployments(self) -> list[dict[str, str]]:
         return _scan_model_keys("FAST")
 
@@ -51,6 +82,12 @@ class Settings(BaseSettings):
 
     def data_path(self) -> Path:
         return Path(self.data_dir)
+
+    def chroma_path(self) -> Path:
+        return Path(self.chroma_persist_dir)
+
+    def supabase_configured(self) -> bool:
+        return bool(self.supabase_url and self.supabase_service_role_key)
 
 
 @lru_cache

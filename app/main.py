@@ -6,11 +6,16 @@ import uuid
 from contextlib import asynccontextmanager
 
 import litellm
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.staticfiles import StaticFiles
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
+from app.agents import bootstrap_agents
+from app.api.routes import admin, agents, auth, healthcare
 from app.config import get_settings
 from app.models.requests import ChatCompletionRequest, ChatMessage
 from app.models.responses import (
@@ -45,15 +50,28 @@ async def lifespan(app: FastAPI):
         get_router_service()
     except Exception as exc:
         logger.warning("Router not ready at startup: %s", exc)
+    try:
+        bootstrap_agents()
+        logger.info("Healthcare agents registered")
+    except Exception as exc:
+        logger.warning("Agent bootstrap failed: %s", exc)
     yield
 
 
 app = FastAPI(
-    title="LiteLLM Chat API",
-    description="Multi-key LiteLLM backend with conversation history for PyRIT testing",
-    version="1.0.0",
+    title="Healthcare Multi-Agent AI Platform",
+    description="LiteLLM-powered healthcare platform with agent orchestration and Supabase backend",
+    version="2.0.0",
     lifespan=lifespan,
 )
+app.include_router(auth.router)
+app.include_router(agents.router)
+app.include_router(healthcare.router)
+app.include_router(admin.router)
+
+_admin_static = Path(__file__).resolve().parent / "admin" / "static"
+if _admin_static.is_dir():
+    app.mount("/admin/static", StaticFiles(directory=str(_admin_static)), name="admin-static")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -70,7 +88,11 @@ def _latest_user_message(messages: list[ChatMessage]) -> str:
 
 @app.get("/")
 async def root():
-    return {"LiteLLM Chat API": "Ready! Visit /docs for interactive API documentation."}
+    return {
+        "Healthcare Multi-Agent AI Platform": "Ready!",
+        "docs": "/docs",
+        "admin": "/admin",
+    }
 
 @app.get("/getprompt")
 async def get_prompt():

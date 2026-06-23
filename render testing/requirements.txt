@@ -1,1 +1,5 @@
+# Core (for smoke tests + CLI)
 httpx>=0.28.0
+
+# PyRIT red-team scripts (install on tester machine only)
+# pyrit>=0.9.0

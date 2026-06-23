@@ -3,9 +3,17 @@ uvicorn[standard]>=0.32.0
 litellm>=1.55.0
 python-dotenv>=1.0.0
 pydantic-settings>=2.6.0
+pydantic[email]>=2.6.0
 tiktoken>=0.8.0
 filelock>=3.16.0
 slowapi>=0.1.9
 httpx>=0.28.0
 pytest>=8.3.0
 pytest-asyncio>=0.24.0
+# Healthcare platform
+supabase>=2.10.0
+redis>=5.0.0
+langgraph>=0.2.0
+langchain-core>=0.3.0
+python-jose[cryptography]>=3.3.0
+chromadb>=0.5.0

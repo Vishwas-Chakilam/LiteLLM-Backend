@@ -1,0 +1,110 @@
+### Healthcare Multi-Agent Platform — Example Requests
+### Use with REST Client, Postman, or curl
+
+@baseUrl = http://localhost:8000
+@token = your-jwt-access-token
+
+### Health check
+GET {{baseUrl}}/health
+
+### List registered agents
+GET {{baseUrl}}/agents
+
+### Sign up (patient)
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "patient@example.com",
+  "password": "securepass123",
+  "full_name": "Jane Patient",
+  "role": "patient"
+}
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "patient@example.com",
+  "password": "securepass123"
+}
+
+### Chat — symptom triage
+POST {{baseUrl}}/chat
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "message": "I have had a mild headache for 2 days",
+  "session_id": "sess-001"
+}
+
+### Chat — multi-agent (prior auth + triage)
+POST {{baseUrl}}/chat
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "message": "Patient needs MRI authorization and has chest pain",
+  "session_id": "sess-002"
+}
+
+### Run workflow explicitly
+POST {{baseUrl}}/workflow/run
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "workflow_name": "healthcare_orchestration",
+  "query": "Check drug interactions between metformin and lisinopril",
+  "agents": ["medication_agent", "compliance_safety_agent"]
+}
+
+### Get workflow status
+GET {{baseUrl}}/workflow/{{workflow_id}}
+Authorization: Bearer {{token}}
+
+### Register custom agent (admin)
+POST {{baseUrl}}/agents/register
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "agent_id": "custom_billing_agent",
+  "name": "Billing Agent",
+  "display_name": "Billing Specialist",
+  "domain": "billing",
+  "description": "Handles billing inquiries",
+  "capabilities": ["billing", "claims"],
+  "tools": ["payer_rules_mcp"],
+  "preferred_model": "reasoning",
+  "safety_level": "standard",
+  "priority": 3,
+  "version": "1.0.0"
+}
+
+### Create prior authorization case
+POST {{baseUrl}}/prior-auth
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "patient_id": "uuid-of-patient-profile",
+  "insurer": "aetna",
+  "diagnosis_codes": ["M54.5"],
+  "procedure_codes": ["70553"],
+  "clinical_notes": "Patient with chronic low back pain, conservative treatment failed for 6 weeks. MRI lumbar spine requested.",
+  "patient_data": {
+    "age": 45,
+    "insurance_provider": "aetna"
+  }
+}
+
+### Legacy LiteLLM chat (still available)
+POST {{baseUrl}}/v1/chat/completions
+Content-Type: application/json
+
+{
+  "messages": [{"role": "user", "content": "Hello"}]
+}

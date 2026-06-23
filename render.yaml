@@ -56,3 +56,18 @@ services:
         value: data/conversations
       - key: SYSTEM_PROMPT_ENABLED
         value: "true"
+      # Healthcare platform
+      - key: HOSPITAL_SLUG
+        value: city_general
+      - key: HOSPITAL_DATA_FILE
+        value: config/hospital/city_general.json
+      - key: AUTH_REQUIRED
+        value: "false"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: REDIS_URL
+        sync: false
