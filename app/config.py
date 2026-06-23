@@ -74,6 +74,9 @@ class Settings(BaseSettings):
     hospital_slug: str = "city_general"
     hospital_data_file: str = "config/hospital/city_general.json"
 
+    # Tester sandbox API (no auth, synthetic patients only)
+    tester_api_enabled: bool = True
+
     def fast_deployments(self) -> list[dict[str, str]]:
         return _scan_model_keys("FAST")
 

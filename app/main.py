@@ -15,7 +15,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
 from app.agents import bootstrap_agents
-from app.api.routes import admin, agents, auth, healthcare
+from app.api.routes import admin, agents, auth, healthcare, tester
 from app.config import get_settings
 from app.models.requests import ChatCompletionRequest, ChatMessage
 from app.models.responses import (
@@ -64,6 +64,7 @@ app = FastAPI(
     version="2.0.0",
     lifespan=lifespan,
 )
+app.include_router(tester.router)
 app.include_router(auth.router)
 app.include_router(agents.router)
 app.include_router(healthcare.router)
